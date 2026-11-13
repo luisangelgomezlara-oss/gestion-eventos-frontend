@@ -4,23 +4,26 @@ const AuthContext = createContext()
 
 export function AuthProvider({ children }) {
   const [usuario, setUsuario] = useState(() => {
-    const correo = localStorage.getItem('correo')
-    const rol = localStorage.getItem('rol')
-    const token = localStorage.getItem('token')
+    // Cambiamos localStorage por sessionStorage para que la sesión muera al cerrar la pestaña
+    const correo = sessionStorage.getItem('correo')
+    const rol = sessionStorage.getItem('rol')
+    const token = sessionStorage.getItem('token')
     return token ? { correo, rol, token } : null
   })
 
   const login = (data) => {
-    localStorage.setItem('token', data.token)
-    localStorage.setItem('correo', data.correo)
-    localStorage.setItem('rol', data.rol)
+    // Guardamos en sessionStorage de forma temporal y segura por sesión de pestaña
+    sessionStorage.setItem('token', data.token)
+    sessionStorage.setItem('correo', data.correo)
+    sessionStorage.setItem('rol', data.rol)
     setUsuario(data)
   }
 
   const logout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('correo')
-    localStorage.removeItem('rol')
+    // Limpiamos todo al cerrar sesión
+    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('correo')
+    sessionStorage.removeItem('rol')
     setUsuario(null)
   }
 
